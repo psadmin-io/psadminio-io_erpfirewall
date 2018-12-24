@@ -4,7 +4,7 @@
   "author": "Dan Iverson",
   "summary": "Install the Appsian Application Security Platform (ERP Firewall) into a PeopleSoft domain.",
   "license": "MIT",
-  "source": "",
+  "source": "https://github.com/psadmin-io/io_erpfirewall",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",

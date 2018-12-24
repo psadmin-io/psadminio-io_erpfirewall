@@ -5,6 +5,7 @@ class io_erpfirewall (
   $domain_user               = hiera('domain_user', undef),
   $pia_domain_list           = hiera_hash('pia_domain_list', undef),
   $appserver_domain_list     = hiera_hash('appserver_domain_list', undef),
+  $library_base              = undef,
   $pia                       = undef,
   $appserver                 = undef,
 ) {
@@ -12,9 +13,12 @@ class io_erpfirewall (
   case $::osfamily {
     'windows': {
       $fileowner       = $domain_user
+      $library_platform = 'Windows'
     }
     default: {
       $fileowner       = $psft_install_user_name
+      
+      $library_platform = 'Unix'
     }
   }
 
