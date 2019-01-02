@@ -6,66 +6,82 @@
 1. [Description](#description)
 2. [Setup - The basics of getting started with io_erpfirewall](#setup)
     * [What io_erpfirewall affects](#what-io_erpfirewall-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with io_erpfirewall](#beginning-with-io_erpfirewall)
 3. [Usage - Configuration options and additional functionality](#usage)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what problem it solves. This is your 30-second elevator pitch for your module. Consider including OS/Puppet version it works with.       
-
-You can give more descriptive information in a second paragraph. This paragraph should answer the questions: "What does this module *do*?" and "Why would I use it?" If your module has a range of functionality (installation, configuration, management, etc.), this is the time to mention it.
+This module will install the Appsian EPR Firewall libaries and configure the web server filters. There are multiple locations that `.jar` files exist for the product, and this module ensures that all locations are updated. (You must provide the source files, this module will put them in the correct location). The module will also update the `web.xml` file so the ERP Firewall filter is correctly added.
 
 ## Setup
 
 ### What io_erpfirewall affects **OPTIONAL**
 
-If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
+This module affects the following locations and files:
 
-If there's more that they should know about, though, this is the place to mention:
-
-* Files, packages, services, or operations that the module will alter, impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here. 
-  
-If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
+* `PS_HOME\class` or `PS_CUST_HOME\class` for app server libraries
+* `PIA_HOME\peoplesoft\applications\PORTAL.war\WEB-INF\web.xml`
+* `PIA_HOME\peoplesoft\applications\lib`
+* `PIA_HOME\peoplesoft\applications\PORTAL.war\lib`
+* `PIA_HOME\peoplesoft\applications\PORTAL.war\gsdocs`
 
 ### Beginning with io_erpfirewall  
 
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+This module requires a source directory storing all the `.jar` files that the ERP Firewall uses. The source directory is expected to look like this:
+
+```
+tree C:\dpk\files\erpfirewall
+C:\dpk\files\erpfirewall
+├───appserver
+│   └───Windows
+│   └───Linux
+└───pia
+    └───Windows
+    |   ├───lib
+    |   └───PORTAL.war
+    |       └───WEB-INF
+    |           ├───gsdocs
+    |           └───lib
+    └───Linux
+        ├───lib
+        └───PORTAL.war
+            └───WEB-INF
+                ├───gsdocs
+                └───lib
+
 
 ## Usage
 
-This section is where you describe how to customize, configure, and do the fancy stuff with your module here. It's especially helpful if you include usage examples and code samples for doing things with your module.
+1. Copy the `io_erpfirewall` module code into your `DPK_HOME\modules` folder.
+1. In your `psft_customizations.yaml` file, add the `io_erpfirewall::*` parameters to configure the module.
+1. Add `contain ::io_erpfirewall` to your DPK Role.
 
 ## Reference
 
-Users need a complete list of your module's classes, types, defined types providers, facts, and functions, along with the parameters for each. You can provide this list either via Puppet Strings code comments or as a complete list in the README Reference section.
+The following configuration options are avialable via `psft_customizations.yaml`.
 
-* If you are using Puppet Strings code comments, this Reference section should include Strings information so that your users know how to access your documentation.
+```yaml
+io_erpfirewall::library_base:     'puppet:///modules/io_deploy/erpfirewall/'
+io_erpfirewall::appserver:        true
+io_erpfirewall::pia:              true
+io_erpfirewall::use_ps_cust_home: true
+```
 
-* If you are not using Puppet Strings, include a list of all of your classes, defined types, and so on, along with their parameters. Each element in this listing should include:
+* `library_base`: The source folder for the ERP Firewarll binaries to deploy. This location must be accessible on each machine.
+* `appserver`: Enables the deployment of app server libraries. Default is `true`.
+* `pia`: Enables the configuration and deployment of web server libraries. Default is `true`.
+* `use_ps_cust_home`: On the application server, the ERP Firewall libraries will deploy to `PS_HOME/class`. Default is `false`. Set this parameter to deploy the libraries to `PS_CUST_HOME/class`. If you set this, you must also update `psappsrv.cfg` to have this line:
 
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
+```ini
+[PSTOOLS]
+Add to CLASSPATH:     '%PS_CUST_HOME%\class'
+```
+or you can add this to the `psft_customizations.yaml` file under your `appserver_domain_list`:
 
-## Limitations
+```yaml
+    config_settings:
+      PSTOOLS/Add to CLASSPATH:     '%PS_CUST_HOME%\class'
+```
 
-This is where you list OS compatibility, version compatibility, etc. If there are Known Issues, you might want to include them under their own heading here.
-
-## Development
-
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+  
