@@ -4,6 +4,7 @@
 class io_erpfirewall::appserver (
   $ensure                = $io_erpfirewall::ensure,
   $appserver_domain_list = $io_erpfirewall::appserver_domain_list,
+<<<<<<< HEAD
   $use_ps_cust_home      = $io_erpfirewall::use_ps_cust_home,
   $ps_home_location      = $io_erpfirewall::ps_home_location,
   $ps_cust_home_location = $io_erpfirewall::ps_cust_home_location,
@@ -26,5 +27,12 @@ class io_erpfirewall::appserver (
       source => $deploy_source,
       recurse => true,
     }
+=======
+){
+  notify { 'Deploying appserver files for ERP Firewall': } 
+  
+  $appserver_domain_list.each |$domain_name, $appserv_domain_info| {
+    
+>>>>>>> a530d80561fe9bd0d9b1334ebef215975b39bcfb
   }
 }
