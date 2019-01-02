@@ -5,8 +5,6 @@ class io_erpfirewall (
   $pia_domain_list           = hiera_hash('pia_domain_list', undef),
   $appserver_domain_list     = hiera_hash('appserver_domain_list', undef),
   $library_base              = undef,
-  $library_platform          = undef,
-  $fileowner                 = undef,
   $pia                       = undef,
   $appserver                 = undef,
   $use_ps_cust_home          = false,
@@ -28,7 +26,7 @@ class io_erpfirewall (
     contain ::io_erpfirewall::pia
   }
   if ($appserver) {
-    contain ::io_appserver::appserver
+    contain ::io_erpfirewall::appserver
   }
 
 
