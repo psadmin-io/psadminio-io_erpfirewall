@@ -1,15 +1,7 @@
 # Class: io_erpfirewall::appserver
 #
 #
-class io_erpfirewall::appserver (
-  $ensure                = $io_erpfirewall::ensure,
-  $appserver_domain_list = $io_erpfirewall::appserver_domain_list,
-  $use_ps_cust_home      = $io_erpfirewall::use_ps_cust_home,
-  $ps_home_location      = $io_erpfirewall::ps_home_location,
-  $ps_cust_home_location = $io_erpfirewall::ps_cust_home_location,
-  $library_base          = $io_erpfirewall::library_base,
-  $library_platform      = $io_erpfirewall::library_platform,
-){
+class io_erpfirewall::appserver () inherits io_erpfirewall {
   notify { 'Deploying appserver files for ERP Firewall': } 
   
   if $use_ps_cust_home == true {
@@ -25,6 +17,9 @@ class io_erpfirewall::appserver (
       ensure => file,
       source => $deploy_source,
       recurse => true,
+      owner  => $psft_runtime_user_name,
+      group  => $psft_runtime_group_name,
+      mode   => '0644',
     }
   }
 }
