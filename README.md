@@ -49,7 +49,7 @@ C:\dpk\files\erpfirewall
             └───WEB-INF
                 ├───gsdocs
                 └───lib
-
+```
 
 ## Usage
 
@@ -83,5 +83,3 @@ or you can add this to the `psft_customizations.yaml` file under your `appserver
     config_settings:
       PSTOOLS/Add to CLASSPATH:     '%PS_CUST_HOME%\class'
 ```
-
-  
