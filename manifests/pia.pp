@@ -39,34 +39,7 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
       mode    => '0644',
     }
 
-    # $filter_content = {
-    #   'filter-name' => 'gs_erp_firewall',
-    #   'filter-class'=>'com.greyheller.firewall.Psfw',
-    #   'async-supported' => true,
-    #   'init-param' => {
-    #     'param-name' => 'failopen',
-    #     'param-value' => false
-    #     }
-    #   }
-
-    # notify { "Filter Content Hash: ${filter_content}":}
-
-    # xml_fragment {"ERPFirewall-web-xml-${domain_name}":
-    #   ensure  => $ensure,
-    #   xpath   => "/web-app/filter/filter-name[text()='gs_erp_firewall']",
-    #   path    => "${deploy_location}/PORTAL.war/WEB-INF/web.xml",
-    #   content => {
-    #     'filter-name'     => 'gs_erp_firewall',
-    #     'filter-class'    =>'com.greyheller.firewall.Psfw',
-    #     'async-supported' => true,
-    #     'init-param'      => {
-    #       'param-name'  => 'failopen',
-    #       'param-value' => false
-    #       }
-    #     },
-    # }
-
-    $filter_match = '    <filter-name>gs_erp_firewall</filter-name>'
+    $filter_match = '<filter-name>gs_erp_firewall</filter-name>'
     $filter_line = "
   <filter>
     <filter-name>gs_erp_firewall</filter-name>
@@ -90,22 +63,6 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
       after   => '  <!-- <distributable/> -->',
       replace => false,
     }
-
-#     $filter_mapping_match = "    <filter-name>gs_erp_firewall</filter-name>"
-#     $filter_mapping_line = "
-#   <filter-mapping>
-#     <filter-name>gs_erp_firewall</filter-name>
-#     <url-pattern>/*</url-pattern>
-#   </filter-mapping>
-# "
-
-#     file_line { "ERPFirewall-web-xml-filter-mapping-${domain}":
-#       path    => "${deploy_location}/PORTAL.war/WEB-INF/web.xml",
-#       line    => $filter_mapping_line,
-#       match   => $filter_mapping_match,
-#       after   => '  </filter-mapping>',
-#       replace => false,
-#     }
 
   }
 }
