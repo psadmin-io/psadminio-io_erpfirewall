@@ -5,6 +5,7 @@ class io_erpfirewall::appserver () inherits io_erpfirewall {
   notify { 'Deploying appserver files for ERP Firewall': }
 
   $appserver_domain_list.each |$domain_name, $appserver_domain_info| {
+    notify {"${domain_name} App Deploy Location: ${app_deploy_location}": }
 
     case $library_platform {
       default: {
