@@ -7,7 +7,7 @@ class io_erpfirewall (
   $library_base              = undef,
   $pia                       = undef,
   $appserver                 = undef,
-  $app_deploy_location       = undef,,
+  $app_deploy_location       = undef,
   $ps_home_location          = hiera('ps_home_location', undef),
   $ps_cust_home_location     = hiera('ps_cust_home_location', undef),
   $ps_config_home            = hiera('ps_config_home', undef),
