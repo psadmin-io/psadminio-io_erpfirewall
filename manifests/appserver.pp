@@ -17,13 +17,14 @@ class io_erpfirewall::appserver () inherits io_erpfirewall {
       }
       'Windows': {
         exec { "Windows ERP Firewall Application Server Install: ${app_deploy_location}":
-          command => "${archive_location}/ERP_Firewall/AppServer/Windows/setup.exe `
+          command => "copy-item ${archive_location}/ERP_Firewall/AppServer/Windows/setup.exe \${Env:temp};
+                \${Env:temp}/setup.exe `
                 /log=\"\${Env:TEMP}/appserver-installation.log\" `
                 /verysilent `
                 /suppressmsgboxes `
                 /pshome=\"${app_deploy_location}\"",
           creates => "${app_deploy_location}/classes/gs-util.jar",
-          user    => $psft_install_user_name,
+          provider => powershell,
         }
       }
     } # end case ${library_platform}
