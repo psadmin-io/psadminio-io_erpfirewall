@@ -29,7 +29,7 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
             /log=\"\${Env:TEMP}\erpfirewall-webserver-installation.log\" `
             /verysilent `
             /suppressmsgboxes `
-            /pshome=\"{ps_config_home}\" `
+            /pshome=\"${ps_config_home}\" `
             /piadomain=\"${domain_name}\""
         creates => "${ps_config_home}/webserv/${pia_domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
       }
