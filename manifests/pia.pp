@@ -8,6 +8,8 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
 
   $pia_domain_list.each |$domain_name, $pia_domain_info| {
 
+    $udomain_name = upcase($domain_name)
+
     case $library_platform {
       default: {
         exec { 'install_erpfirewall':
@@ -24,6 +26,11 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
       }
 
       'Windows': {
+        file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
+          source  => "${ps_home_location}/class/psjoa.jar",
+          owner   => $psft_runtime_user_name,
+          mode    => '0755',
+        } ->
         exec { 'install_erpfirewall':
           command  => "copy-item ${archive_location}/ERP_Firewall/WebServer/Windows/gh_firewall_web.exe \${Env:temp}; `
               \${Env:temp}/gh_firewall_web.exe `
@@ -31,15 +38,9 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
               /verysilent `
               /suppressmsgboxes `
               /pshome=\"${ps_config_home}\" `
-              /piadomain=\"${domain_name}\"",
+              /piadomain=\"${udomain_name}\"",
           creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           provider => powershell,
-        } ->
-        file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
-          source  => "${ps_home_location}/class/psjoa.jar",
-          owner   => $psft_runtime_user_name,
-          mode    => '0755',
-          require => Exec['install_erpfirewall'],
         }
       }
     } # case platform
