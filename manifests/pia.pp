@@ -31,14 +31,13 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
           owner   => $psft_runtime_user_name,
           mode    => '0755',
         } ->
-        exec { 'install_erpfirewall':
-          command  => "copy-item ${archive_location}/ERP_Firewall/WebServer/Windows/gh_firewall_web.exe \${Env:temp}; `
-              \${Env:temp}/gh_firewall_web.exe `
-              /log=\"\${Env:TEMP}/erpfirewall-webserver-installation.log\" `
-              /verysilent `
-              /suppressmsgboxes `
-              /pshome=\"${ps_config_home}\" `
-              /piadomain=\"${udomain_name}\"",
+        exec { 'copy_erpfirewall_installer':
+          command  => "copy-item ${archive_location}/ERP_Firewall/WebServer/Windows/gh_firewall_web.exe c:/temp",
+          creates  => "c:/temp/gh_firewall_web.exe",
+          provider => powershell,
+        } -> 
+        exec { 'install_erpfirwall':
+          command  => "& \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${udomain_name}\"",
           creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           provider => powershell,
         }
