@@ -43,7 +43,7 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
         }
         -> xml_fragment { "${domain_name}_fail_open":
           ensure  => 'present',
-          path    => 'C:/hosts.xml',
+          path    => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/web.xml",
           xpath   => "/web-app/filter[filter-name='gs_erp_firewall']/init-param/param-value",
           content => {
               value   => 'true'
