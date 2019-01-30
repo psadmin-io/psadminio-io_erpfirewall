@@ -46,7 +46,7 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
           path    => 'C:/hosts.xml',
           xpath   => "/web-app/filter[filter-name='gs_erp_firewall']/init-param/param-value",
           content => {
-              value   => true
+              value   => 'true'
             }
         }
       } # windows 
