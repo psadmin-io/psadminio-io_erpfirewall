@@ -27,10 +27,11 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
 
       'Windows': {
 
-        if( $redeploy_firewall) {
+        if( $redeploy_firewall = 'true') {
           file {"${domain_name}_remove_gsdocs": 
             ensure  => absent,
             path    => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
+            force   => true,
           }
         }
 
@@ -51,7 +52,7 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
         }
         -> exec { "${domain_name}_install_erpfirwall":
           command  => "& \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${udomain_name}\"; sleep 30",
-          # creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
+          creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           provider => powershell,
         }
         -> xml_fragment { "${domain_name}_fail_open":
