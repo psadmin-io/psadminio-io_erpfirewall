@@ -1,7 +1,15 @@
 # Class: io_erpfirewall::pia
 #
 #
-class io_erpfirewall::pia () inherits io_erpfirewall {
+class io_erpfirewall::pia (
+  $psft_runtime_user_name = $io_erpfirewall::psft_runtime_user_name,
+  $pia_domain_list        = $io_erpfirewall::pia_domain_list,
+  $library_platform       = $io_erpfirewall::library_platform,
+  $archive_location       = $io_erpfirewall::archive_location,
+  $ps_config_home         = $io_erpfirewall::ps_config_home,
+  $ps_home_location       = $io_erpfirewall::ps_home_location,
+  $redeploy_firewall      = $io_erpfirewall::redeploy_firewall,
+) inherits io_erpfirewall {
   notify { 'Deploying PIA files for ERP Firewall': }
 
   # $deploy_source = "${library_base}/pia/${library_platform}"
@@ -16,22 +24,20 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
           command => "/usr/bin/su -m -s /bin/bash - ${psft_runtime_user_name} -c \"${archive_location}/ERP_Firewall/WebServer/Unix/gh_firewall_web.bin ${ps_config_home} ${domain_name}\"",
           creates => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
         }
-
-        file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
-          source  => "${ps_home_location}/appserv/classes/psjoa.jar",
-          owner   => $psft_runtime_user_name,
-          mode    => '0755',
-          require => Exec['install_erpfirewall'],
+        -> file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
+          source => "${ps_home_location}/appserv/classes/psjoa.jar",
+          owner  => $psft_runtime_user_name,
+          mode   => '0755',
         }
       } # default
 
       'Windows': {
 
         if( $redeploy_firewall = 'true') {
-          file {"${domain_name}_remove_gsdocs": 
-            ensure  => absent,
-            path    => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
-            force   => true,
+          file {"${domain_name}_remove_gsdocs":
+            ensure => absent,
+            path   => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
+            force  => true,
           }
         }
 
@@ -40,10 +46,10 @@ class io_erpfirewall::pia () inherits io_erpfirewall {
           owner  => $psft_runtime_user_name,
           mode   => '0755',
         }
-        
-	file { "${domain_name}_c_temp":
-          ensure  => directory,
-          path    => 'c:/temp',
+
+        file { "${domain_name}_c_temp":
+          ensure => directory,
+          path   => 'c:/temp',
         }
         -> exec { "${domain_name}_copy_erpfirewall_installer":
           command  => "copy-item ${archive_location}/ERP_Firewall/WebServer/Windows/gh_firewall_web.exe c:/temp",
