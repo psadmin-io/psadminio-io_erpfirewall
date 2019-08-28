@@ -20,7 +20,7 @@ class io_erpfirewall::pia (
 
     case $library_platform {
       default: {
-        exec { 'install_erpfirewall':
+        exec { "install_erpfirewall-${domain_name}":
           command => "/bin/su -m -s /bin/bash - ${psft_runtime_user_name} -c \"${archive_location}/ERP_Firewall/WebServer/Unix/gh_firewall_web.bin ${ps_config_home} ${domain_name}\"",
           creates => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
         }
@@ -72,5 +72,17 @@ class io_erpfirewall::pia (
       } # windows 
 
     } # case platform
+
+    $site_list   = $pia_domain_info['site_list']
+    $site_list.each |$site_name, $site_info| {
+
+        $disable_file   = "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs/site_${site_name}_disabled.txt"
+        file {"disable_erpfirewall_$site_name":
+          path  => $disable_file,
+          ensure  => $site_info['appsian_disable'],
+        }
+
+    } # end site_list
+
   } # pia_domain_list
 }

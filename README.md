@@ -83,3 +83,15 @@ or you can add this to the `psft_customizations.yaml` file under your `appserver
     config_settings:
       PSTOOLS/Add to CLASSPATH:     '%PS_CUST_HOME%\class'
 ```
+
+## Disable Site
+
+The module can also install the `site_<sitename>_disabled.txt` file. Under the site configuration, add `disable_appsian: present` to create the file.
+
+```yaml
+pia_domain_list:
+  "%{hiera('db_name')}":
+    site_list:
+      "%{hiera('pia_site_name')}":
+        appsian_disable:       present
+```
