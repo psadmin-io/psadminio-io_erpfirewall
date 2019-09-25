@@ -42,9 +42,7 @@ class io_erpfirewall::pia (
         }
 
         file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
-          source => "${ps_home_location}/class/psjoa.jar",
-          owner  => $psft_runtime_user_name,
-          mode   => '0755',
+          source => "${ps_home_location}/class/psjoa.jar"
         }
 
         file { "${domain_name}_c_temp":
