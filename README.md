@@ -62,7 +62,7 @@ C:\dpk\files\erpfirewall
 The following configuration options are avialable via `psft_customizations.yaml`.
 
 ```yaml
-io_erpfirewall::library_base:     'puppet:///modules/io_deploy/erpfirewall/'
+io_erpfirewall::archive_location: '//share/folder/ERP_Firewall/'
 io_erpfirewall::appserver:        true
 io_erpfirewall::pia:              true
 io_erpfirewall::use_ps_cust_home: true
