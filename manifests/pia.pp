@@ -21,7 +21,7 @@ class io_erpfirewall::pia (
     case $library_platform {
       default: {
         exec { "install_erpfirewall-${domain_name}":
-          command => "/bin/su -m -s /bin/bash - ${psft_runtime_user_name} -c \"${archive_location}/ERP_Firewall/WebServer/Unix/gh_firewall_web.bin ${ps_config_home} ${domain_name}\"",
+          command => "/bin/su -m -s /bin/bash - ${psft_runtime_user_name} -c \"${archive_location}/WebServer/Unix/gh_firewall_web.bin ${ps_config_home} ${domain_name}\"",
           creates => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
         }
         -> file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
@@ -50,7 +50,7 @@ class io_erpfirewall::pia (
           path   => 'c:/temp',
         }
         -> exec { "${domain_name}_copy_erpfirewall_installer":
-          command  => "copy-item ${archive_location}/ERP_Firewall/WebServer/Windows/gh_firewall_web.exe c:/temp",
+          command  => "copy-item ${archive_location}/WebServer/Windows/gh_firewall_web.exe c:/temp",
           # creates  => 'c:/temp/gh_firewall_web.exe',
           provider => powershell,
         }
