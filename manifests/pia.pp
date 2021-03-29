@@ -72,15 +72,17 @@ class io_erpfirewall::pia (
     } # case platform
 
     $site_list   = $pia_domain_info['site_list']
-    $site_list.each |$site_name, $site_info| {
+    if $site_list {
+      $site_list.each |$site_name, $site_info| {
 
-        $disable_file   = "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs/site_${site_name}_disabled.txt"
-        file {"disable_erpfirewall_$site_name":
-          path  => $disable_file,
-          ensure  => $site_info['appsian_disable'],
-        }
+          $disable_file   = "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs/site_${site_name}_disabled.txt"
+          file {"disable_erpfirewall_${site_name}":
+            ensure => $site_info['appsian_disable'],
+            path   => $disable_file,
+          }
 
-    } # end site_list
+      } # end site_list
+    }
 
   } # pia_domain_list
 }
