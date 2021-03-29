@@ -1,7 +1,7 @@
 class io_erpfirewall (
-  $ensure                    = lookup('ensure', 'present', undef, undef, ''),
-  $psft_runtime_user_name    = lookup('psft_runtime_user_name', 'psadm2', undef, undef, ''),
-  $oracle_install_group_name = lookup('oracle_install_group_name', 'oinstall', undef, undef, ''),
+  $ensure                    = lookup('ensure', undef, undef, 'present'),
+  $psft_runtime_user_name    = lookup('psft_runtime_user_name', undef, undef, 'psadm2'),
+  $oracle_install_group_name = lookup('oracle_install_group_name', undef, undef, 'oinstall'),
   $pia_domain_list           = hiera('pia_domain_list', undef),
   $appserver_domain_list     = hiera('appserver_domain_list', undef),
   $library_base              = undef,
