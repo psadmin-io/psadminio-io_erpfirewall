@@ -9,6 +9,7 @@ class io_erpfirewall::pia (
   $ps_config_home         = $io_erpfirewall::ps_config_home,
   $ps_home_location       = $io_erpfirewall::ps_home_location,
   $redeploy_firewall      = $io_erpfirewall::redeploy_firewall,
+  $java_home_location     = $io_erpfirewall::java_home_location,
 ) inherits io_erpfirewall {
   notify { 'Deploying PIA files for ERP Firewall': }
 
@@ -55,7 +56,7 @@ class io_erpfirewall::pia (
           provider => powershell,
         }
         -> exec { "${domain_name}_install_erpfirwall":
-          command  => "& \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
+          command  => "\$env:JAVA_HOME=\"${java_home_location}\"; \$env:PATH=\"\${env:PATH};\${env:JAVA_HOME}\\bin}\"; & \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
           creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           provider => powershell,
         }

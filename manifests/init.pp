@@ -12,7 +12,8 @@ class io_erpfirewall (
   $ps_cust_home_location     = hiera('ps_cust_home_location', undef),
   $ps_config_home            = hiera('ps_config_home', undef),
   $archive_location          = hiera('archive_location', undef),
-  $redeploy_firewall         = hiera('redeploy_firewall', undef)
+  $redeploy_firewall         = hiera('redeploy_firewall', undef),
+  $java_home_location        = hiera('java_home_location', undef)
 ) {
 
   case $::osfamily {
