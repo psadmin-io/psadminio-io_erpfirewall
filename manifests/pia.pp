@@ -56,9 +56,11 @@ class io_erpfirewall::pia (
           provider => powershell,
         }
         -> exec { "${domain_name}_install_erpfirwall":
-          command  => "\$env:JAVA_HOME=\"${java_home_location}\"; \$env:PATH=\"\${env:PATH};\${env:JAVA_HOME}\\bin}\"; & \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
-          creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
-          provider => powershell,
+          # \$env:JAVA_HOME=\"${java_home_location}\"; \$env:PATH=\"\${env:PATH};\${env:JAVA_HOME}\\bin}\";
+          command     => "& \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
+          creates     => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
+          environment => ["JAVA_HOME=${java_home_location}", "PATH=\${env:PATH};\${env:JAVA_HOME}\\bin"],
+          provider    => powershell,
         }
         -> xml_fragment { "${domain_name}_fail_open":
           ensure  => 'present',
