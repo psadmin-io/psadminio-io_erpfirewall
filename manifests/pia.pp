@@ -21,7 +21,7 @@ class io_erpfirewall::pia (
     case $library_platform {
       default: {
         exec { "install_erpfirewall-${domain_name}":
-          command => "/bin/su -m -s /bin/bash - ${psft_runtime_user_name} -c \"${archive_location}/WebServer/Unix/gh_firewall_web.bin ${ps_config_home} ${domain_name}\"",
+          command => "/bin/su -m -s /bin/bash - ${psft_runtime_user_name} -c \"${archive_location}/WebServer/Unix/asp_web.bin ${ps_config_home} ${domain_name}\"",
           creates => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
         }
         -> file { "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/lib/psjoa.jar" :
@@ -50,12 +50,11 @@ class io_erpfirewall::pia (
           path   => 'c:/temp',
         }
         -> exec { "${domain_name}_copy_erpfirewall_installer":
-          command  => "copy-item ${archive_location}/WebServer/Windows/gh_firewall_web.exe c:/temp",
-          # creates  => 'c:/temp/gh_firewall_web.exe',
+          command  => "copy-item ${archive_location}/WebServer/Windows/asp_web.exe c:/temp",
           provider => powershell,
         }
         -> exec { "${domain_name}_install_erpfirwall":
-          command  => "& \"c:/temp/gh_firewall_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${udomain_name}\"; sleep 30",
+          command  => "& \"c:/temp/asp_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${udomain_name}\"; sleep 30",
           creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           provider => powershell,
         }

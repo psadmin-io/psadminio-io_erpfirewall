@@ -10,15 +10,15 @@ class io_erpfirewall::appserver () inherits io_erpfirewall {
     case $library_platform {
       default: {
         exec { "Unix ERP Firewall Application Server Install: ${domain_name} ${app_deploy_location}":
-          command => "${archive_location}/AppServer/Unix/gh_fwappserv.bin ${app_deploy_location}",
+          command => "${archive_location}/AppServer/Unix/asp_app.bin ${app_deploy_location}",
           creates => "${app_deploy_location}/appserv/classes/gs-util.jar",
           user    => $psft_install_user_name,
         }
       }
       'Windows': {
         exec { "Windows ERP Firewall Application Server Install: ${domain_name} ${app_deploy_location}":
-          command => "copy-item ${archive_location}/AppServer/Windows/setup.exe \${Env:temp};
-                \${Env:temp}/setup.exe `
+          command => "copy-item ${archive_location}/AppServer/Windows/asp_app.exe \${Env:temp};
+                \${Env:temp}/asp_app.exe `
                 /log=\"\${Env:TEMP}/appserver-installation.log\" `
                 /verysilent `
                 /suppressmsgboxes `
