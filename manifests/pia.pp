@@ -16,7 +16,7 @@ class io_erpfirewall::pia (
 
   $pia_domain_list.each |$domain_name, $pia_domain_info| {
 
-    $udomain_name = upcase($domain_name)
+    #$udomain_name = upcase($domain_name)
 
     case $library_platform {
       default: {
@@ -54,7 +54,7 @@ class io_erpfirewall::pia (
           provider => powershell,
         }
         -> exec { "${domain_name}_install_erpfirwall":
-          command  => "& \"c:/temp/asp_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${udomain_name}\"; sleep 30",
+          command  => "& \"c:/temp/asp_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
           creates  => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           provider => powershell,
         }
