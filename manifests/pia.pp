@@ -17,11 +17,7 @@ class io_erpfirewall::pia (
 
   $pia_domain_list.each |$domain_name, $pia_domain_info| {
 
-<<<<<<< HEAD
-    # $udomain_name = upcase($domain_name)
-=======
     #$udomain_name = upcase($domain_name)
->>>>>>> 00d3c28460fcf234ba6ef9c161793748d13ea33e
 
     case $library_platform {
       default: {
