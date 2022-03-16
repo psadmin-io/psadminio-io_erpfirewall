@@ -12,7 +12,8 @@ class io_erpfirewall (
   $ps_cust_home_location     = lookup('ps_cust_home_location', undef, undef, ''),
   $ps_config_home            = lookup('ps_config_home', undef, undef, ''),
   $archive_location          = lookup('archive_location', undef, undef, ''),
-  $redeploy_firewall         = lookup('redeploy_firewall', undef, undef, '')
+  $redeploy_firewall         = lookup('redeploy_firewall', undef, undef, ''),
+  $java_home                 = lookup('jdk_location', undef, undef, '')
 ) {
 
   case $::osfamily {

@@ -9,6 +9,7 @@ class io_erpfirewall::pia (
   $ps_config_home         = $io_erpfirewall::ps_config_home,
   $ps_home_location       = $io_erpfirewall::ps_home_location,
   $redeploy_firewall      = $io_erpfirewall::redeploy_firewall,
+  $jdk_location           = $io_erpfirewall::jdk_location,
 ) inherits io_erpfirewall {
   notify { 'Deploying PIA files for ERP Firewall': }
 
