@@ -25,13 +25,13 @@ class io_erpfirewall::appserver (
       'Windows': {
         exec { "Windows ERP Firewall Application Server Install: ${domain_name} ${ps_home_location}":
           command  => "copy-item ${archive_location}/AppServer/Windows/asp_app.exe \${Env:temp};
-                \$env:PATH+=\";\${env:JAVA_HOME}\\bin\" ; \${Env:temp}/asp_app.exe `
+                \$env:JAVA_HOME=\"${java_home}\"; \$env:PATH+=\";\${env:JAVA_HOME}\\bin\" ; `
+                \${Env:temp}/asp_app.exe `
                 /log=\"\${Env:TEMP}/appserver-installation.log\" `
                 /verysilent `
                 /suppressmsgboxes `
                 /pshome=\"${ps_home_location}\"",
           creates  => "${ps_home_location}/classes/gs-util.jar",
-          environment => ["JAVA_HOME=${java_home}"],
           provider => powershell,
         }
       }
