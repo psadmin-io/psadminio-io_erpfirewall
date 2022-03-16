@@ -7,6 +7,7 @@ class io_erpfirewall::appserver (
   $library_platform             = $io_erpfirewall::library_platform,
   $archive_location             = $io_erpfirewall::archive_location,
   $ps_home_location             = $io_erpfirewall::ps_home_location,
+  $java_home                    = $io_erpfirewall::java_home,
 ) inherits io_erpfirewall {
   notify { 'Deploying appserver files for ERP Firewall': }
 
@@ -24,12 +25,13 @@ class io_erpfirewall::appserver (
       'Windows': {
         exec { "Windows ERP Firewall Application Server Install: ${domain_name} ${ps_home_location}":
           command  => "copy-item ${archive_location}/AppServer/Windows/asp_app.exe \${Env:temp};
-                \${Env:temp}/asp_app.exe `
+                \$env:PATH+=\";\${env:JAVA_HOME}\\bin\" ; \${Env:temp}/asp_app.exe `
                 /log=\"\${Env:TEMP}/appserver-installation.log\" `
                 /verysilent `
                 /suppressmsgboxes `
                 /pshome=\"${ps_home_location}\"",
           creates  => "${ps_home_location}/classes/gs-util.jar",
+          environment => ["JAVA_HOME=${java_home}"],
           provider => powershell,
         }
       }
