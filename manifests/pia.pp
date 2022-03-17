@@ -56,7 +56,7 @@ class io_erpfirewall::pia (
         }
         -> exec { "${domain_name}_install_erpfirwall":
           # command  => "\$env:JAVA_HOME=\"${java_home}\"; \$env:PATH+=\";\${env:JAVA_HOME}\\bin\" ; gci \$env:PATH; & \"c:/temp/asp_web.exe\" /log=\"c:/temp/erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
-          command => "cmd /c set JAVA_HOME=\"${java_home}\" && set PATH=\"%PATH%;\${env:JAVA_HOME}\\bin\"  && c:/temp/asp_web.exe /log=\"c:\\temp\\erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
+          command => "$env_comspec /c set JAVA_HOME=\"${java_home}\" && set PATH=\"%PATH%;\${env:JAVA_HOME}\\bin\"  && c:/temp/asp_web.exe /log=\"c:\\temp\\erpfirewall-webserver-installation.log\" /verysilent /suppressmsgboxes /pshome=\"${ps_config_home}\" /piadomain=\"${domain_name}\"; sleep 30",
           creates => "${ps_config_home}/webserv/${domain_name}/applications/peoplesoft/PORTAL.war/WEB-INF/gsdocs",
           # provider => powershell,
         }
