@@ -17,9 +17,8 @@ class io_erpfirewall::appserver (
     case $library_platform {
       default: {
         exec { "Unix ERP Firewall Application Server Install: ${domain_name} ${ps_home_location}":
-          command => "${archive_location}/AppServer/Unix/asp_app.bin ${ps_home_location}",
-          creates => "${ps_home_location}/appserv/classes/gs-util.jar",
-          user    => $psft_install_user_name,
+          command => "/bin/su -m -s /bin/bash - ${psft_install_user_name} -c \"${archive_location}/AppServer/Unix/asp_app.bin ${ps_home_location}\"",
+          creates => "${ps_home_location}/appserv/classes/gs-util.jar"
         }
       }
       'Windows': {
