@@ -2,7 +2,7 @@
 #
 #
 class io_erpfirewall::appserver (
-  $psft_runtime_user_name       = $io_erpfirewall::psft_runtime_user_name,
+  $psft_install_user_name       = $io_erpfirewall::psft_install_user_name,
   $appserver_domain_list        = $io_erpfirewall::appserver_domain_list,
   $library_platform             = $io_erpfirewall::library_platform,
   $archive_location             = $io_erpfirewall::archive_location,
@@ -19,7 +19,7 @@ class io_erpfirewall::appserver (
         exec { "Unix ERP Firewall Application Server Install: ${domain_name} ${ps_home_location}":
           command => "${archive_location}/AppServer/Unix/asp_app.bin ${ps_home_location}",
           creates => "${ps_home_location}/appserv/classes/gs-util.jar",
-          user    => $psft_runtime_user_name,
+          user    => $psft_install_user_name,
         }
       }
       'Windows': {
